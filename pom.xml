@@ -9,43 +9,64 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
+    <modules>
+        <module>core</module>
+        <module>environment</module>
+    </modules>
+
+    <properties>
+        <java.version>11</java.version>
+        <io.github.kgress.scaffold.version>DEV</io.github.kgress.scaffold.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <org-projectlombok.version>1.18.8</org-projectlombok.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.kgress.scaffold</groupId>
+                <artifactId>scaffold</artifactId>
+                <version>${io.github.kgress.scaffold.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.kgress.scaffold</groupId>
+                <artifactId>framework</artifactId>
+                <version>${io.github.kgress.scaffold.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.kgress.scaffold</groupId>
+                <artifactId>environment</artifactId>
+                <version>${io.github.kgress.scaffold.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${org-projectlombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
             </plugin>
         </plugins>
     </build>
-
-    <modules>
-        <module>environment</module>
-        <module>core</module>
-    </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.retailmenot.scaffold</groupId>
-                <artifactId>scaffold</artifactId>
-                <version>1.0.0-beta</version>
-            </dependency>
-            <dependency>
-                <groupId>com.retailmenot.scaffold</groupId>
-                <artifactId>framework</artifactId>
-                <version>1.0.0-beta</version>
-            </dependency>
-            <dependency>
-                <groupId>com.retailmenot.scaffold</groupId>
-                <artifactId>environment</artifactId>
-                <version>1.0.0-beta</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
 </project>
