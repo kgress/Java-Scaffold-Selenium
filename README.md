@@ -1,46 +1,35 @@
 # Java-Scaffold-Selenium
 A project implementation of the Scaffold framework, running in parallel against SauceDemo
 
-# Current version of Scaffold
-To view the most current version of Scaffold, [visit the Central Repository](https://search.maven.org/search?q=g:io.github.kgress.scaffold).
+# ***************
+# This project is IN BETA, and not ready for general use quite yet
+# ***************
 
-# Scaffold Archetype
-For a quick start on creating a new Scaffold project, [check out the Scaffold-Archetype codebase](https://github.com/kgress/scaffold-archetype).
+This project is currently awaiting the arrival of scaffold artifacts from the sonatype/Nexus Maven repo, and won't work on its own until they are published.
 
-# Scaffold Documentation
-For more in depth documentation regarding Scaffold, [check out the Scaffold codebase](https://github.com/kgress/scaffold).
+In order to use this project in its current state, you will need to download [the scaffold project](https://github.com/RetailMeNot/scaffold), then run the following commands:
 
-# Required Tools for Dev
-* Java 11
-* Maven 3.x
+```
+from scaffold/ - $ mvn clean install
+from scaffold/model - $ mvn clean install
+from scaffold/environment - $ mvn clean install
+from scaffold/framework - $ mvn clean install
+```
 
-# Running the Testing
-## Locally
-There are two potential methods of running the testing locally. The first is maven goal execution and the second is running the testing through the IDE. There are two pre reqs:
+Performing these commands will install the needed jar files into your local Maven repo. Once these artifacts have been 
+installed properly, you should be able to work with this sample project.
 
-### Local Overrides
-If you don't already have one, create a file named `application.OVERRIDES` in `environment > src > main > resources > application-OVERRIDES.properties`. In this file, include the desired capabilities and any other secret values required to run your testing. 
+# Running Tests
 
-*NOTE: Make sure `application.OVERRIDES` is in your `.gitignore`*
+After completeing the configuration steps, you should be able to run the SauceDemo tests either locally or against Sauce Labs servers, 
+depending on the options you specify.
 
-### Local Driver
-To run these tests locally, you will need Chrome and [chromedriver](http://chromedriver.chromium.org/) installed and on your PATH. If you plan on using a different browser,
-install that local driver instead.
+## Local Configuration
 
-## Maven
-During your maven goal execution step on your CI, specify the following system property: `-Dspring.profiles.active=your_spring_profile.properties`.
+To run these tests locally, you will need Chrome and [chromedriver](http://chromedriver.chromium.org/) installed and on your PATH.
 
-This will pull the environment variables from the profile specified in the system property. For example, if you wanted to run the sauce chrome profile, 
-you'd enter the following command: `mvn test -Dspring.profiles.active=overrides.properties`
+## Sauce Labs configuration
 
-## IDE
-Create a new JUNIT run configuration for the testing you'd like to run locally. In the new run configuration, add the new environment variable `spring.profiles.active=overrides`. This setting will pull in the environment variables from the overrides profile when that test is run through the IDE. 
-
-## CI
-Just like running the testing through maven locally, add a maven step in your CI testing pipeline that includes the spring profile you'd like to use.`-Dspring.profiles.active=your_spring_profile.properties`. 
-For example: `mvn test -Dspring.profiles.active=sauce_chrome.properties`
-
-## Using a Sauce Labs configuration
 To run these tests on Sauce Labs, you will need to set two environment variables to match your Sauce Labs credentials.
  
 You will need both your User Name and your Access Key: 
