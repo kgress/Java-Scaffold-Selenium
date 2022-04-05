@@ -1,10 +1,9 @@
 package com.saucelabs.saucedemo.login;
 
-import com.saucelabs.saucedemo.BaseTest;
-import com.saucelabs.saucedemo.page.InventoryPage;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.saucelabs.saucedemo.BaseTest;
+import org.junit.jupiter.api.Test;
 
 /**
  * This class is an example test class pertaining to the login page <a href>https://www.saucedemo.com/</a>
@@ -14,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class LoginTest extends BaseTest {
 
-    // Local static variables that are not needed in other test files
+    // Local static final variables that are not needed in other test files
     private static final String BAD_USERNAME = "bad_username";
     private static final String BAD_PASSWORD = "0";
 
@@ -25,23 +24,10 @@ public class LoginTest extends BaseTest {
     @Test
     public void loginSuccessExampleTest() {
         // Navigate to the login page and log in with good user credentials using the data from the BaseTest file
-        navigation.navigateToLoginPage().login(USERNAME, PASSWORD);
-
-        // Assert that the user is now on the inventory page by creating a new instance of the InventoryPage and invoking isOnPage()
-        assertTrue(new InventoryPage().isOnPage());
-    }
-
-    /**
-     * The same test as above but written using a slightly different method. Here, we're creating an instance of the inventory page
-     * prior to the assertion and using the navigateToInventoryPage instead of navigateToLogInPage method.
-     */
-    @Test
-    public void loginSuccessExampleTest2() {
-        // Navigate to the login page and log in with good user credentials using the data from the BaseTest file
-        var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
 
         // Assert that the user is now on the inventory page using the isOnPage() method
-        assertTrue(inventoryPage.isOnPage());
+        assertTrue(inventoryPage.getInventoryList().isDisplayed());
     }
 
     /**
@@ -50,9 +36,9 @@ public class LoginTest extends BaseTest {
     @Test
     public void loginBadUsernameExampleTest() {
         // Create a new instance of the login page by using the navigateToLoginPage from the Navigation file
-        var loginPage = navigation.navigateToLoginPage();
+        final var loginPage = navigation.navigateToLoginPage();
 
-        // Perform a bad login action by using the BAD_USERNAME variable on this file and the PASSWORD variable from the BaseTest File
+        // Perform a bad login action by using the BAD_USERNAME final variable on this file and the PASSWORD final variable from the BaseTest File
         loginPage.login(BAD_USERNAME, PASSWORD);
 
         // Assert the login error message is displayed
@@ -65,9 +51,9 @@ public class LoginTest extends BaseTest {
     @Test
     public void loginBadPasswordExampleTest() {
         // Create a new instance of the login page by using the navigateToLoginPage from the Navigation file
-        var loginPage = navigation.navigateToLoginPage();
+        final var loginPage = navigation.navigateToLoginPage();
 
-        // Perform a bad login action by using the USERNAME variable on the BaseTest file and the BAD_PASSWORD variable on this file
+        // Perform a bad login action by using the USERNAME final variable on the BaseTest file and the BAD_PASSWORD final variable on this file
         loginPage.login(USERNAME, BAD_PASSWORD);
 
         // Assert the login error message is displayed

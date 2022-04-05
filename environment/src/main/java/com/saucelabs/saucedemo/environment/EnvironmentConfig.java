@@ -1,7 +1,6 @@
 package com.saucelabs.saucedemo.environment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -24,15 +23,4 @@ import org.springframework.stereotype.Service;
 @ComponentScan(value = "com.saucelabs.saucedemo")
 @PropertySource("classpath:/application.properties")
 public class EnvironmentConfig {
-
-    /**
-     * An example of how to create an {@link ObjectMapper} using the {@link Bean} method level annotation
-     *
-     * @return the {@link ObjectMapper}
-     */
-    @Bean
-    public ObjectMapper exampleObjectMapper() {
-        // A default object mapper is already provided in application context. Here, you'd customize and return your own
-        return new ObjectMapper();
-    }
 }

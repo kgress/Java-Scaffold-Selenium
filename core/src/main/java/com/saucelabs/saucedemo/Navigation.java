@@ -1,10 +1,10 @@
 package com.saucelabs.saucedemo;
 
-import com.saucelabs.saucedemo.page.InventoryPage;
-import io.github.kgress.scaffold.webdriver.WebDriverNavigation;
+import com.saucelabs.saucedemo.pages.InventoryPage;
+import com.saucelabs.saucedemo.pages.LoginPage;
+import io.github.kgress.scaffold.WebDriverNavigation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.saucelabs.saucedemo.page.LoginPage;
 
 /**
  * Page Navigation

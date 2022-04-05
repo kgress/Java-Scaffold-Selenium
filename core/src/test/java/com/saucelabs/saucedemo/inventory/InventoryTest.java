@@ -1,10 +1,12 @@
 package com.saucelabs.saucedemo.inventory;
 
-import com.saucelabs.saucedemo.BaseTest;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.saucelabs.saucedemo.BaseTest;
+import com.saucelabs.saucedemo.components.InventoryItemComponent;
+import org.junit.jupiter.api.Test;
 
 /**
  * This class is an example test class pertaining to the login page <a href>https://www.saucedemo.com/inventory.html</a>.
@@ -18,50 +20,96 @@ public class InventoryTest extends BaseTest {
      * An example of a test checking the sauce labs bolt t shirt label is correct
      */
     @Test
-    public void testItem3Label() {
-        // The expected name for the assertion later on
-        var itemName = "Sauce Labs Bolt T-Shirt";
+    public void testItemOneName() {
+        final var expectedString = "Sauce Labs Backpack";
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        final var listOfComponents = inventoryPage.getInventoryResultsList();
+        final var itemName1 = listOfComponents.get(0).getItemName().getText();
+        assertEquals(expectedString, itemName1);
 
-        // Navigate to the inventory page using the username and password data from the BaseTest file
-        var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
-
-        // Assert the inventory page's item name, for item number 3, matches the expected name from earlier.
-        assertEquals(itemName, inventoryPage.getItemName(3), "The name for the Bolt T-Shirt should equal " + itemName);
+        getWebDriverWrapper().navigate().refresh();
+        assertEquals(expectedString, itemName1);
     }
 
     @Test
-    public void testItem3Price() {
-        // The expected price for the assertion later on
-        var itemPrice = "$15.99";
-
-        // Navigate to the inventory page using the username and password data from the BaseTest file
-        var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
-
-        // Assert the inventory page's item price, for item number 3, matches the expected price from earlier.
-        assertEquals(itemPrice, inventoryPage.getItemPrice(3), "The price for the Bolt T-Shirt should equal " + itemPrice);
+    public void testItemThreePrice() {
+        final var expectedPrice = "$15.99";
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        final var listOfComponents = inventoryPage.getInventoryResultsList();
+        assertEquals(expectedPrice, listOfComponents.get(2).getItemPrice().getText());
     }
 
     @Test
-    public void testItem3Description() {
-        // The expected description for the assertion later on
-        var itemDescription = "Get your testing superhero on with the Sauce Labs bolt T-shirt. From American Apparel, 100% ringspun combed cotton, heather gray with red bolt.";
-
-        // Navigate to the inventory page using the username and password data from the BaseTest file
-        var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
-
-        // Assert the inventory page's item description, for item number 3, matches the expected description from earlier.
-        assertEquals(itemDescription, inventoryPage.getItemDescription(3), "The description for the Bolt T-Shirt should equal " + itemDescription);
+    public void testItemThreeDescription() {
+        final var expectedDescription = "Get your testing superhero on with the Sauce Labs bolt T-shirt. From American " +
+                "Apparel, 100% ringspun combed cotton, heather gray with red bolt.";
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        final var thirdResult = inventoryPage.getInventoryResultsList().get(2);
+        assertEquals(expectedDescription, thirdResult.getItemDescription().getText());
     }
 
     @Test
-    public void testAddOneItem() {
-        // Navigate to the inventory page using the username and password data from the BaseTest file
-        var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+    public void testAddItemTwo() {
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        final var secondResult = inventoryPage.getInventoryResultsList().get(1);
+        secondResult.clickAddToCartButton();
+        assertTrue(secondResult.getRemove().isDisplayed());
+    }
 
-        // Add item number 3 to the cart by invoking the addItemToCart(int) function
-        inventoryPage.addItemToCart(3);
+    @Test
+    public void testRemoveItemFive() {
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        final var fifthResult = inventoryPage.getInventoryResultsList().get(4);
+        fifthResult.clickAddToCartButton();
+        fifthResult.clickRemoveButton();
+        assertTrue(fifthResult.getAddToCart().isDisplayed());
+    }
 
-        // Assert the item has been added to the cart by invoking the itemAddedToCard(int) function
-        assertTrue(inventoryPage.itemAddedToCart(3));
+    @Test
+    public void testAllResultsHaveAddToCartButton() {
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        inventoryPage.getInventoryResultsList().forEach(result -> assertTrue(result.getAddToCart().isDisplayed()));
+    }
+
+    @Test
+    public void testFirstFourResultsContainSauce() {
+        final var expectedItemName = "Sauce";
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        inventoryPage.getInventoryResultsList()
+                .stream()
+                .limit(4)
+                .map(InventoryItemComponent::getItemName)
+                .forEach(result -> assertTrue(result.getText().contains(expectedItemName)));
+    }
+
+    @Test
+    public void testFindLastShirtAndPriceMatches() {
+        final var expectedPrice = "$15.99";
+        final var allTheThingsShirtPartial = "allTheThings()";
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        final var shirt = inventoryPage.getInventoryResultsList()
+                .stream()
+                .filter(item -> item.getItemName().getText().contains(allTheThingsShirtPartial))
+                .map(InventoryItemComponent::getItemPrice)
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(shirt);
+        assertEquals(expectedPrice, shirt.getText());
+    }
+
+    @Test
+    public void testFindFleeceJacketAndAddToCart() {
+        final var fleeceJacketPartial = "Fleece";
+        final var inventoryPage = navigation.navigateToInventoryPage(USERNAME, PASSWORD);
+        final var fleeceJacket = inventoryPage.getInventoryResultsList()
+                .stream()
+                .filter(item -> item.getItemName().getText().contains(fleeceJacketPartial))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(fleeceJacket);
+        fleeceJacket.clickAddToCartButton();
+        assertTrue(fleeceJacket.getRemove().isDisplayed());
     }
 }

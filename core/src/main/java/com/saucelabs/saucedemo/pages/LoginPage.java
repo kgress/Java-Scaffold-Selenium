@@ -1,6 +1,7 @@
-package com.saucelabs.saucedemo.page;
+package com.saucelabs.saucedemo.pages;
 
-import com.saucelabs.saucedemo.BasePage;
+import io.github.kgress.scaffold.BasePage;
+import io.github.kgress.scaffold.BaseWebElement;
 import io.github.kgress.scaffold.webelements.*;
 import lombok.Getter;
 import org.openqa.selenium.By;
@@ -39,7 +40,7 @@ import org.openqa.selenium.By;
  *
  * For more information on strongly typed elements, check out scaffold's documentation here <a href>https://github.com/kgress/scaffold#page-objects</a>.
  *
- * We also see an {@link Override} for the {@link #isOnPage()} method. This is a method defined on {@link BasePage} and is intended to be overwritten. This
+ * We also see an {@link Override} for the {@link #verifyIsOnPage(BaseWebElement...)} method. This is a method defined on {@link BasePage} and is intended to be overwritten. This
  * method gives us a little more creative freedom when it comes to Navigation with the ability to "verify" we've navigated to the page we've intended. The BasePage
  * is intended to provide an example on how we can potentially create more shared page functionality across all pages. In this method, isDisplayed() is a selenium
  * action that is used to ensure the {@link #credentialsInfo} is correctly appearing on the screen.
@@ -49,25 +50,20 @@ import org.openqa.selenium.By;
  * that needs to use this action. In this method, sendKeys and click are selenium actions that are used to enter text in
  * to the {@link InputWebElement}s and click on the {@link ButtonWebElement}.
  */
+@Getter
 public class LoginPage extends BasePage {
 
     /**
      * The properties we've chosen to define as our page representation for the login page
      */
-    @Getter private InputWebElement usernameInput = new InputWebElement(By.id("user-name"));
-    @Getter private InputWebElement passwordInput = new InputWebElement(By.id("password"));
-    @Getter private ButtonWebElement submitButton = new ButtonWebElement(By.className("btn_action"));
-    @Getter private DivWebElement credentialsInfo = new DivWebElement(By.id("login_credentials"));
-    @Getter private DivWebElement loginErrorMessage = new DivWebElement(By.cssSelector("[data-test=error]"));
+    private final InputWebElement usernameInput = new InputWebElement(By.id("user-name"));
+    private final InputWebElement passwordInput = new InputWebElement(By.id("password"));
+    private final ButtonWebElement submitButton = new ButtonWebElement(By.className("btn_action"));
+    private final DivWebElement credentialsInfo = new DivWebElement(By.id("login_credentials"));
+    private final DivWebElement loginErrorMessage = new DivWebElement(By.cssSelector("[data-test=error]"));
 
-    /**
-     * An example of how to use a basic level of page verification
-     *
-     * @return true or false based on if the {@link #credentialsInfo} is displayed
-     */
-    @Override
-    public boolean isOnPage() {
-        return getCredentialsInfo().isDisplayed();
+    public LoginPage() {
+        verifyIsOnPage(getUsernameInput(), getPasswordInput());
     }
 
     /**
@@ -76,7 +72,7 @@ public class LoginPage extends BasePage {
      * @param username the username as {@link String}
      * @param password the password as {@link String}
      */
-    public void login(String username, String password) {
+    public InventoryPage login(String username, String password) {
         // Input the username into the username field
         getUsernameInput().sendKeys(username);
 
@@ -85,5 +81,7 @@ public class LoginPage extends BasePage {
 
         // Click the submit button
         getSubmitButton().click();
+
+        return new InventoryPage();
     }
 }

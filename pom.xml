@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <io.github.kgress.scaffold.version>2.1.1</io.github.kgress.scaffold.version>
+        <io.github.kgress.scaffold.version>3.3.4</io.github.kgress.scaffold.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <org-projectlombok.version>1.18.8</org-projectlombok.version>
     </properties>

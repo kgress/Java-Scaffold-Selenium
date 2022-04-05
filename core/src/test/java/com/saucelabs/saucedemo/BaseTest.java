@@ -1,9 +1,8 @@
 package com.saucelabs.saucedemo;
 
 import com.saucelabs.saucedemo.environment.EnvironmentConfig;
+import io.github.kgress.scaffold.ScaffoldBaseTest;
 import io.github.kgress.scaffold.environment.config.ScaffoldConfiguration;
-import io.github.kgress.scaffold.extensions.SauceExtension;
-import io.github.kgress.scaffold.webdriver.ScaffoldBaseTest;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -36,7 +35,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  * extends off of BaseTest will now be able to access everything from ScaffoldBaseTest and the Navigation class from your own project.
  */
 @Execution(ExecutionMode.CONCURRENT)
-@ExtendWith({SpringExtension.class, SauceExtension.class})
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.NONE,
         classes = { EnvironmentConfig.class, ScaffoldConfiguration.class }
