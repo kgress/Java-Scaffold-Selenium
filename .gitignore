@@ -66,4 +66,4 @@ target/
 test-output/
 
 ## Spring Related ##
-**/application-OVERRIDES.properties
+**/application-dev.properties

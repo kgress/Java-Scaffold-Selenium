@@ -1,27 +1,31 @@
-package com.saucelabs.saucedemo.pages;
+package com.saucelabs.saucedemo.pageobjects;
 
 import com.saucelabs.saucedemo.components.CartItemComponent;
 import io.github.kgress.scaffold.BasePage;
 import io.github.kgress.scaffold.webelements.ButtonWebElement;
 import io.github.kgress.scaffold.webelements.DivWebElement;
-import java.util.List;
 import lombok.Getter;
+import org.openqa.selenium.By;
+
+import java.util.List;
 
 @Getter
 public class CartPage extends BasePage {
 
-  private final static String CART_ITEM_SELECTOR = ".cart_item";
-  private final DivWebElement resultsContainer = new DivWebElement(".cart_list");
-  private final DivWebElement yourCartHeader = new DivWebElement(".title");
+  private final Header header = new Header();
+  private final DivWebElement cartList = new DivWebElement(".cart_list");
+  private final DivWebElement yourCartHeaderLabel = new DivWebElement(".title");
   private final ButtonWebElement continueShoppingButton = new ButtonWebElement("#continue-shopping");
   private final ButtonWebElement checkoutButton = new ButtonWebElement("#checkout");
 
   public CartPage() {
-    verifyIsOnPage(getYourCartHeader());
+    verifyIsOnPage(getYourCartHeaderLabel());
   }
 
-  public List<CartItemComponent> getCartComponents() {
-    var elements = resultsContainer.findElements(DivWebElement.class, CART_ITEM_SELECTOR);
+  public List<CartItemComponent> getCartItems() {
+    final var cartItemSelector = ".cart_item";
+    var elements = getCartList().findElements(
+            DivWebElement.class, By.cssSelector(cartItemSelector), true);
     return buildComponentList(elements, CartItemComponent.class);
   }
 }

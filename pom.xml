@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <io.github.kgress.scaffold.version>3.3.4</io.github.kgress.scaffold.version>
+        <io.github.kgress.scaffold.version>3.4.3</io.github.kgress.scaffold.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <org-projectlombok.version>1.18.8</org-projectlombok.version>
     </properties>
@@ -69,4 +69,43 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+
+        <!--
+        This profile automatically loads the locally checked in application-dev.properties
+        file so we don't have to specify that environment variable all the time when testing locally.
+        -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>spring.profiles.active</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+        </profile>
+
+        <!--
+        This profile can be used when you want to load the sauce chrome configuration, when
+        sending testing to saucelabs.
+        -->
+        <profile>
+            <id>sauce_chrome</id>
+            <properties>
+                <activatedProperties>sauce_chrome</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>spring.profiles.active</name>
+                    <value>sauce_chrome</value>
+                </property>
+            </activation>
+        </profile>
+    </profiles>
 </project>

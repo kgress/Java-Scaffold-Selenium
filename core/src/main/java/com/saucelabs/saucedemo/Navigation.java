@@ -1,40 +1,16 @@
 package com.saucelabs.saucedemo;
 
-import com.saucelabs.saucedemo.pages.InventoryPage;
-import com.saucelabs.saucedemo.pages.LoginPage;
+import com.saucelabs.saucedemo.pageobjects.InventoryPage;
+import com.saucelabs.saucedemo.pageobjects.LoginPage;
 import io.github.kgress.scaffold.WebDriverNavigation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-/**
- * Page Navigation
- *
- * The navigation class is intended to encapsulate all web driver navigation into a single class. Any and all navigation
- * should be added here.
- *
- * Class Anatomy
- *
- * Above the class name, the annotation of @Component is required for Spring Boot to do any direct injection. In this case,
- * the base environment url is being pulled from the application.properties file. This annotation also allows us to inject
- * this navigation class into the BaseTest class.
- *
- * Extending off of {@link WebDriverNavigation} since it provides access to the web driver. This is what allows us to perform
- * the <pre>getWebDriverWrapper().get()</pre> in the {@link #navigateToLoginPage()} method.
- *
- * In the constructor, we reference <pre>{@code {@Value("${base-environment-url}") String baseEnvironmentUrl}</pre>.
- * This is a spring environment variable defined in application.properties. It's important to know that only Strings can be used for these variables.
- * Spring Boot also highly recommend to use class injection instead of composition whenever injecting into classes that are not
- * under the test directory.
- *
- * The {@link #navigateToLoginPage()} method is where the actual work happens. We get the WebDriverWrapper from the WebDriverNavigation class
- * and we perform the get() function to navigate to our base environment url. Then, we return a new instance of a ProfilePage page object.
- */
 @Component
 public class Navigation extends WebDriverNavigation {
 
-    /**
-     * The property for the base environment url
-     */
+    protected static final String STANDARD_USER_USERNAME = "standard_user";
+    protected static final String STANDARD_USER_PASSWORD = "secret_sauce";
     private final String baseEnvironmentUrl;
 
     /**
@@ -79,9 +55,18 @@ public class Navigation extends WebDriverNavigation {
         var loginPage = navigateToLoginPage();
 
         // With the new instance, invoke the login method from the login page
-        loginPage.login(username, password);
+        return loginPage.login(username, password);
+    }
 
-        // After the login redirect occurs, return a new instance of the inventory page
-        return new InventoryPage();
+    /**
+     * A navigation method that will navigate to the inventory page from
+     * {@link #navigateToInventoryPage(String, String)} with the standard user credentials. Since
+     * the sauce demo site is not a real production website, we can hard code these values. For
+     * sensitive data, make sure to wrap it as a secret and load it in as an environment variable.
+     *
+     * @return as {@link InventoryPage}
+     */
+    public InventoryPage navigateToInventoryPageAsStandardUser() {
+        return navigateToInventoryPage(STANDARD_USER_USERNAME, STANDARD_USER_PASSWORD);
     }
 }
