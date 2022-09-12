@@ -13,19 +13,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.retailmenot.scaffold</groupId>
-            <artifactId>framework</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.saucelabs</groupId>
             <artifactId>environment</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.kgress.scaffold</groupId>
+            <artifactId>framework</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.2</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

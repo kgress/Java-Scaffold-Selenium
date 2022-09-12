@@ -1,11 +1,8 @@
 package com.saucelabs.saucedemo;
 
-import com.retailmenot.scaffold.environment.config.ScaffoldConfiguration;
-import com.retailmenot.scaffold.webdriver.ScaffoldBaseTest;
-import com.saucelabs.saucedemo.environment.SauceDemoConfig;
-import org.junit.Before;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.saucelabs.saucedemo.environment.EnvironmentConfig;
+import io.github.kgress.scaffold.ScaffoldBaseTest;
+import io.github.kgress.scaffold.environment.config.ScaffoldConfiguration;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -16,15 +13,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @Execution(ExecutionMode.CONCURRENT)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.NONE,
-    classes = { SauceDemoConfig.class, ScaffoldConfiguration.class }
+        webEnvironment = SpringBootTest.WebEnvironment.NONE,
+        classes = { EnvironmentConfig.class, ScaffoldConfiguration.class }
 )
 public abstract class BaseTest extends ScaffoldBaseTest {
-    @Autowired
-    protected SauceDemoNavigation navigation;
 
-    @AfterEach
-    protected void setTestStatus() {
-        //set test status
-    }
+    // Shared constant variables that are used in the LoginTest and InventoryTest files
+    protected static final String USERNAME = "standard_user";
+    protected static final String PASSWORD = "secret_sauce";
+
+    @Autowired
+    protected Navigation navigation;
 }
